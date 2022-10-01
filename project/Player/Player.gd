@@ -9,11 +9,13 @@ const HEAVY_HIT_RADIUS := 25.0
 const PRIMARY_DAMAGE := 2
 const HEAVY_DAMAGE := 3
 const RELOAD_TIME := 1.0
+const SPEED_PENALTY_PER_ENEMY := 10
 
 var _primary_attacks := [AttackKey.PRIMARY, AttackKey.PRIMARY, AttackKey.PRIMARY]
 var _heavy_attacks := [AttackKey.HEAVY]
 var _ranged_attacks := []
 var _can_attack := true
+var adjacent_enemies := 0
 
 onready var _body_radius = $CollisionShape2D.shape.radius as float
 onready var _primary_hit_radius = _body_radius + PRIMARY_HIT_RADIUS as float
@@ -29,8 +31,10 @@ func _physics_process(delta:float)->void:
 		Input.get_axis("up", "down")
 	).normalized()
 	
+	var speed := SPEED - (SPEED_PENALTY_PER_ENEMY * adjacent_enemies)
+	
 	# warning-ignore:return_value_discarded
-	move_and_collide(SPEED * movement_direction * delta)
+	move_and_collide(speed * movement_direction * delta)
 	
 	if _can_attack:
 		if Input.is_action_just_pressed("primary_attack"):

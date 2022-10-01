@@ -7,7 +7,7 @@ var target : Player
 var _should_move := true
 
 export var speed := 175
-export var health := 3
+export var health := 6
 
 onready var _tween = $Tween as Tween
 
@@ -46,3 +46,13 @@ func _on_Tween_tween_all_completed()->void:
 	if health <= 0:
 		queue_free()
 	_should_move = true
+
+
+func _on_SlowZone_body_entered(body:PhysicsBody2D)->void:
+	if body == target:
+		target.adjacent_enemies += 1
+
+
+func _on_SlowZone_body_exited(body:PhysicsBody2D)->void:
+	if body == target:
+		target.adjacent_enemies -= 1
