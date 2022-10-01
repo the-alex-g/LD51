@@ -15,15 +15,19 @@ onready var _walls = $Walls as TileMap
 onready var _floors = $Floor as TileMap
 onready var _animation_player = $AnimationPlayer as AnimationPlayer
 onready var _blackout = $Blackout as Sprite
+onready var _fade_in = $FadeIn as Sprite
 
 
 func _ready()->void:
 	_blackout.scale *= ROOM_SIZE
+	_fade_in.scale *= ROOM_SIZE
 	_create_room()
 
 
 func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE)->void:
 	at *= ROOM_SIZE
+	_fade_in.position = at * 32
+	_fade_in.modulate = Color.white
 	for x in ROOM_SIZE:
 		for y in ROOM_SIZE:
 			if y != 0:
@@ -47,7 +51,7 @@ func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE)->void:
 				_walls.set_cell(x + at.x, y + at.y, WallTiles.HORIZONTAL)
 	if side_connected != Connections.NONE:
 		_create_door_in_room(at, side_connected)
-
+	$FadeInAnim.play("FadeIn")
 
 func _create_door_in_room(at:Vector2, side:int)->void:
 	var door_position := Vector2.ZERO
