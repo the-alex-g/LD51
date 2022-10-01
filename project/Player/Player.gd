@@ -114,5 +114,7 @@ func _on_CooldownTimer_timeout()->void:
 	_can_attack = true
 
 
-func _on_Main_game_over()->void:
+func _on_Main_game_over(victory:bool)->void:
 	_game_over = true
+	if not victory:
+		pass

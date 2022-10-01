@@ -2,6 +2,7 @@ extends Node2D
 
 signal player_caught
 signal add_enemy(at)
+signal passed_room
 
 enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RIGHT}
 enum FloorTiles {FLOOR}
@@ -13,6 +14,7 @@ const VECTOR_TO_CONNECTION := {Vector2.UP:Connections.BOTTOM, Vector2.DOWN:Conne
 
 var _current_room_position := Vector2.ZERO
 var _previous_room_position = null
+var _game_over := false
 
 onready var _walls = $Walls as TileMap
 onready var _floors = $Floor as TileMap
@@ -123,8 +125,12 @@ func _delete_room(at:Vector2)->void:
 	for body in _blackout.get_overlapping_bodies():
 		if body is Player:
 			emit_signal("player_caught")
+			_game_over = true
 		elif body is Enemy:
 			body.queue_free()
+	
+	if not _game_over:
+		emit_signal("passed_room")
 	
 	_animation_player.play("Blackout")
 	

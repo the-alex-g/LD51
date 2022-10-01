@@ -56,5 +56,5 @@ func _on_KnockbackTimer_timeout()->void:
 		queue_free()
 
 
-func _on_Main_game_over()->void:
+func _on_Main_game_over(_victory:bool)->void:
 	_game_over = true
