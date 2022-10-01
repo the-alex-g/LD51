@@ -1,6 +1,7 @@
 extends Node2D
 
 signal player_caught
+signal add_enemy(at)
 
 enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RIGHT}
 enum FloorTiles {FLOOR}
@@ -27,10 +28,13 @@ func _ready()->void:
 	_blackout_shape.position = Vector2.ONE * ROOM_SIZE * 16
 	_blackout_shape.shape.extents = Vector2.ONE * ROOM_SIZE * 16
 	_fade_in.scale *= ROOM_SIZE
+	
+	yield(get_parent(), "ready")
+	
 	_create_room()
 
 
-func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE)->void:
+func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE, enemies := true)->void:
 	at *= ROOM_SIZE
 	_fade_in.position = at * 32
 	_fade_in.modulate = Color.white
@@ -57,6 +61,8 @@ func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE)->void:
 				_walls.set_cell(x + at.x, y + at.y, WallTiles.HORIZONTAL)
 	if side_connected != Connections.NONE:
 		_create_door_in_room(at, side_connected)
+	if enemies:
+		_create_enemies(at)
 	$FadeInAnim.play("FadeIn")
 
 func _create_door_in_room(at:Vector2, side:int)->void:
@@ -101,6 +107,15 @@ func _create_door_in_room(at:Vector2, side:int)->void:
 	_walls.set_cellv(door_position, EMPTY)
 
 
+func _create_enemies(at:Vector2)->void:
+	at *= 32
+	at += Vector2.ONE * ROOM_SIZE * 16
+	var total_enemies := 1 + randi() % 4
+	for i in total_enemies:
+		var enemy_position = (Vector2.RIGHT * 32 * ROOM_SIZE / 3).rotated(i * TAU / total_enemies) + at
+		emit_signal("add_enemy", enemy_position)
+
+
 func _delete_room(at:Vector2)->void:
 	at *= ROOM_SIZE
 	_blackout.position = at * 32
@@ -108,6 +123,8 @@ func _delete_room(at:Vector2)->void:
 	for body in _blackout.get_overlapping_bodies():
 		if body is Player:
 			emit_signal("player_caught")
+		elif body is Enemy:
+			body.queue_free()
 	
 	_animation_player.play("Blackout")
 	
@@ -136,7 +153,7 @@ func _on_Main_ten_second_mark()->void:
 		next_room_position_options.erase(_previous_room_position)
 	# create the new room
 	var next_room_position = next_room_position_options[randi() % next_room_position_options.size()] as Vector2
-	_create_room(_current_room_position)
+	_create_room(_current_room_position, Connections.NONE, false)
 	_create_room(next_room_position, VECTOR_TO_CONNECTION[next_room_position - _current_room_position])
 	_previous_room_position = _current_room_position
 	_current_room_position = next_room_position

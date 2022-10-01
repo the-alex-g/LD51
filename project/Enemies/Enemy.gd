@@ -54,3 +54,7 @@ func _on_KnockbackTimer_timeout()->void:
 	_move_in_reverse = false
 	if health <= 0:
 		queue_free()
+
+
+func _on_Main_game_over()->void:
+	_game_over = true

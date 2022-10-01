@@ -7,10 +7,7 @@ onready var _game_timer = $TenSecondTimer as Timer
 
 
 func _ready()->void:
-	var enemy = preload("res://Enemies/Enemy.tscn").instance()
-	enemy.target = $Player
-	enemy.position = Vector2(100, 100)
-	add_child(enemy)
+	randomize()
 
 
 func _on_TenSecondTimer_timeout()->void:
@@ -20,3 +17,12 @@ func _on_TenSecondTimer_timeout()->void:
 func _on_World_player_caught()->void:
 	emit_signal("game_over")
 	_game_timer.stop()
+
+
+func _on_World_add_enemy(at:Vector2)->void:
+	var enemy := preload("res://Enemies/Enemy.tscn").instance()
+	enemy.position = at
+	enemy.target = $Player
+	# warning-ignore:return_value_discarded
+	connect("game_over", enemy, "_on_Main_game_over")
+	add_child(enemy)
