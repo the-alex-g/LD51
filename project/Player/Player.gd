@@ -9,11 +9,10 @@ const HEAVY_HIT_RADIUS := 25.0
 const PRIMARY_DAMAGE := 2
 const HEAVY_DAMAGE := 3
 const RELOAD_TIME := 1.0
-const SPEED_PENALTY_PER_ENEMY := 10
+const SPEED_PENALTY_PER_ENEMY := 30
 
 var _primary_attacks := [AttackKey.PRIMARY, AttackKey.PRIMARY, AttackKey.PRIMARY]
 var _heavy_attacks := [AttackKey.HEAVY]
-var _ranged_attacks := []
 var _can_attack := true
 var _game_over := false
 var adjacent_enemies := 0
@@ -37,7 +36,7 @@ func _physics_process(delta:float)->void:
 		Input.get_axis("up", "down")
 	).normalized()
 	
-	var speed := SPEED - (SPEED_PENALTY_PER_ENEMY * adjacent_enemies)
+	var speed := max(10, SPEED - (SPEED_PENALTY_PER_ENEMY * adjacent_enemies))
 	
 	# warning-ignore:return_value_discarded
 	move_and_collide(speed * movement_direction * delta)
@@ -45,8 +44,6 @@ func _physics_process(delta:float)->void:
 	if _can_attack:
 		if Input.is_action_just_pressed("primary_attack"):
 			_attack(AttackKey.PRIMARY)
-		if Input.is_action_just_pressed("ranged_attack"):
-			_attack(AttackKey.RANGED)
 		if Input.is_action_just_pressed("heavy_attack"):
 			_attack(AttackKey.HEAVY)
 	
@@ -64,19 +61,17 @@ func _attack(type:int)->void:
 			_execute_primary_attack()
 		AttackKey.HEAVY:
 			_execute_heavy_attack()
-		AttackKey.RANGED:
-			_execute_ranged_attack()
 
 
 func _execute_primary_attack()->void:
-	_animation_player.play("Primary")
 	if _primary_attacks.has(AttackKey.PRIMARY):
+		_animation_player.play("Primary")
 		var index := _primary_attacks.find(AttackKey.PRIMARY)
 		_primary_attacks[index] = AttackKey.SPENT
 		
 		_hit_area_collision_shape.shape.radius = _primary_hit_radius
 		# the yield is necessary because otherwise the shape's radius is not resized
-		# when the attack resolves
+		# when the attack resolvesw
 		yield(get_tree().create_timer(0.06), "timeout")
 		
 		for body in _hit_area.get_overlapping_bodies():
@@ -100,12 +95,6 @@ func _execute_heavy_attack()->void:
 				body.hit(HEAVY_DAMAGE)
 
 
-func _execute_ranged_attack()->void:
-	if _ranged_attacks.has(AttackKey.RANGED):
-		var index := _ranged_attacks.find(AttackKey.RANGED)
-		_ranged_attacks[index] = AttackKey.SPENT
-
-
 func _on_Main_ten_second_mark()->void:
 	_reset_attacks()
 
@@ -115,8 +104,6 @@ func _reset_attacks()->void:
 		_primary_attacks[i] = AttackKey.PRIMARY
 	for i in _heavy_attacks.size():
 		_heavy_attacks[i] = AttackKey.HEAVY
-	for i in _ranged_attacks.size():
-		_ranged_attacks[i] = AttackKey.RANGED
 
 
 func _on_CooldownTimer_timeout()->void:
