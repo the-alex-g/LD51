@@ -20,4 +20,7 @@ shape = SubResource( 2 )
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
 [connection signal="timeout" from="CooldownTimer" to="." method="_on_CooldownTimer_timeout"]

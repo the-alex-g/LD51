@@ -1,8 +1,9 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://Main/Main.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Main/Hourglass.png" type="Texture" id=3]
+[ext_resource path="res://Scenery/World.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
@@ -180,14 +181,17 @@ wait_time = 10.0
 autostart = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 23, 28 )
+position = Vector2( 97, 104 )
 
 [node name="Hourglass" type="AnimatedSprite" parent="."]
 position = Vector2( 300, 32 )
 frames = SubResource( 41 )
 animation = "Default"
-frame = 21
+frame = 20
 playing = true
 
+[node name="World" parent="." instance=ExtResource( 4 )]
+
 [connection signal="ten_second_mark" from="." to="Player" method="_on_Main_ten_second_mark"]
+[connection signal="ten_second_mark" from="." to="World" method="_on_Main_ten_second_mark"]
 [connection signal="timeout" from="TenSecondTimer" to="." method="_on_TenSecondTimer_timeout"]

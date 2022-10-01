@@ -8,6 +8,7 @@ func _ready()->void:
 	enemy.target = $Player
 	enemy.position = Vector2(100, 100)
 	add_child(enemy)
+	$Hourglass.frame = 0
 
 
 func _on_TenSecondTimer_timeout()->void:
