@@ -112,7 +112,7 @@ func _create_door_in_room(at:Vector2, side:int)->void:
 func _create_enemies(at:Vector2)->void:
 	at *= 32
 	at += Vector2.ONE * ROOM_SIZE * 16
-	var total_enemies := 1 + randi() % 4
+	var total_enemies := 2 + randi() % 6
 	for i in total_enemies:
 		var enemy_position = (Vector2.RIGHT * 32 * ROOM_SIZE / 3).rotated(i * TAU / total_enemies) + at
 		emit_signal("add_enemy", enemy_position)

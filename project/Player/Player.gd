@@ -24,6 +24,8 @@ onready var _heavy_hit_radius = _body_radius + HEAVY_HIT_RADIUS as float
 onready var _hit_area = $HitArea as Area2D
 onready var _hit_area_collision_shape = $HitArea/CollisionShape2D as CollisionShape2D
 onready var _cooldown_timer = $CooldownTimer as Timer
+onready var _sprite = $Sprite as AnimatedSprite
+onready var _animation_player = $Attack as AnimationPlayer
 
 
 func _physics_process(delta:float)->void:
@@ -47,6 +49,11 @@ func _physics_process(delta:float)->void:
 			_attack(AttackKey.RANGED)
 		if Input.is_action_just_pressed("heavy_attack"):
 			_attack(AttackKey.HEAVY)
+	
+	if abs(movement_direction.x) > abs(movement_direction.y):
+		_sprite.play("Horizontal")
+	else:
+		_sprite.play("Vertical")
 
 
 func _attack(type:int)->void:
@@ -62,6 +69,7 @@ func _attack(type:int)->void:
 
 
 func _execute_primary_attack()->void:
+	_animation_player.play("Primary")
 	if _primary_attacks.has(AttackKey.PRIMARY):
 		var index := _primary_attacks.find(AttackKey.PRIMARY)
 		_primary_attacks[index] = AttackKey.SPENT
@@ -78,6 +86,7 @@ func _execute_primary_attack()->void:
 
 func _execute_heavy_attack()->void:
 	if _heavy_attacks.has(AttackKey.HEAVY):
+		_animation_player.play("Heavy")
 		var index := _heavy_attacks.find(AttackKey.HEAVY)
 		_heavy_attacks[index] = AttackKey.SPENT
 		
