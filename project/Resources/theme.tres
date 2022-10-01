@@ -1,0 +1,16 @@
+[gd_resource type="Theme" load_steps=3 format=2]
+
+[ext_resource path="res://Resources/font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Resources/normal_stylebox.tres" type="StyleBox" id=2]
+
+[resource]
+default_font = ExtResource( 1 )
+Button/colors/font_color = Color( 1, 0.921569, 0.32549, 1 )
+Button/colors/font_color_focus = Color( 1, 0.921569, 0.32549, 1 )
+Button/colors/font_color_hover = Color( 1, 0.972549, 0.780392, 1 )
+Button/colors/font_color_pressed = Color( 1, 0.615686, 0, 1 )
+Button/styles/hover = ExtResource( 2 )
+Button/styles/normal = ExtResource( 2 )
+Button/styles/pressed = ExtResource( 2 )
+Label/colors/font_color = Color( 1, 0.921569, 0.32549, 1 )
+Panel/styles/panel = ExtResource( 2 )

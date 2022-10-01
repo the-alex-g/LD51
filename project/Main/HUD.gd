@@ -14,3 +14,13 @@ func _on_Main_game_over(victory:bool):
 		_animation_player.play("Victory")
 	else:
 		_animation_player.play("Defeat")
+
+
+func _on_PlayAgain_pressed()->void:
+	# warning-ignore:return_value_discarded
+	get_tree().change_scene("res://Main/Main.tscn")
+
+
+func _on_MainMenu_pressed()->void:
+	# warning-ignore:return_value_discarded
+	get_tree().change_scene("res://Main/Main.tscn")
