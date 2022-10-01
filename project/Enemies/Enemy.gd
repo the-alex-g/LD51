@@ -4,8 +4,8 @@ extends KinematicBody2D
 const KNOCKBACK_DISTANCE := Vector2(100, 0)
 
 var target : Player
-var _should_move := true
 var _move_in_reverse := false
+var _game_over := false
 
 export var speed := 175
 export var health := 6
@@ -14,14 +14,16 @@ onready var _knockback_timer = $KnockbackTimer as Timer
 
 
 func _physics_process(delta:float)->void:
-	if _should_move:
-		if _can_see_target():
-			look_at(target.global_position)
-			
-			var movement_direction := Vector2.RIGHT.rotated(rotation) * (-1 if _move_in_reverse else 1)
-			
-			# warning-ignore:return_value_discarded
-			move_and_collide(movement_direction * speed * delta)
+	if _game_over:
+		return
+	
+	if _can_see_target():
+		look_at(target.global_position)
+		
+		var movement_direction := Vector2.RIGHT.rotated(rotation) * (-1 if _move_in_reverse else 1)
+		
+		# warning-ignore:return_value_discarded
+		move_and_collide(movement_direction * speed * delta)
 
 
 func _can_see_target()->bool:

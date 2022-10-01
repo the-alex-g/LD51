@@ -1,5 +1,7 @@
 extends Node2D
 
+signal player_caught
+
 enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RIGHT}
 enum FloorTiles {FLOOR}
 enum Connections {NONE, TOP, BOTTOM, LEFT, RIGHT}
@@ -14,12 +16,16 @@ var _previous_room_position = null
 onready var _walls = $Walls as TileMap
 onready var _floors = $Floor as TileMap
 onready var _animation_player = $AnimationPlayer as AnimationPlayer
-onready var _blackout = $Blackout as Sprite
+onready var _blackout = $Blackout as Area2D
+onready var _blackout_sprite = $Blackout/Sprite as Sprite
+onready var _blackout_shape = $Blackout/CollisionShape2D as CollisionShape2D
 onready var _fade_in = $FadeIn as Sprite
 
 
 func _ready()->void:
-	_blackout.scale *= ROOM_SIZE
+	_blackout_sprite.scale *= ROOM_SIZE
+	_blackout_shape.position = Vector2.ONE * ROOM_SIZE * 16
+	_blackout_shape.shape.extents = Vector2.ONE * ROOM_SIZE * 16
 	_fade_in.scale *= ROOM_SIZE
 	_create_room()
 
@@ -98,6 +104,11 @@ func _create_door_in_room(at:Vector2, side:int)->void:
 func _delete_room(at:Vector2)->void:
 	at *= ROOM_SIZE
 	_blackout.position = at * 32
+	
+	for body in _blackout.get_overlapping_bodies():
+		if body is Player:
+			emit_signal("player_caught")
+	
 	_animation_player.play("Blackout")
 	
 	yield(_animation_player, "animation_finished")

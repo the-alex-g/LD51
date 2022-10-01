@@ -15,6 +15,7 @@ var _primary_attacks := [AttackKey.PRIMARY, AttackKey.PRIMARY, AttackKey.PRIMARY
 var _heavy_attacks := [AttackKey.HEAVY]
 var _ranged_attacks := []
 var _can_attack := true
+var _game_over := false
 var adjacent_enemies := 0
 
 onready var _body_radius = $CollisionShape2D.shape.radius as float
@@ -26,6 +27,9 @@ onready var _cooldown_timer = $CooldownTimer as Timer
 
 
 func _physics_process(delta:float)->void:
+	if _game_over:
+		return
+	
 	var movement_direction := Vector2(
 		Input.get_axis("left", "right"),
 		Input.get_axis("up", "down")
@@ -108,3 +112,7 @@ func _reset_attacks()->void:
 
 func _on_CooldownTimer_timeout()->void:
 	_can_attack = true
+
+
+func _on_Main_game_over()->void:
+	_game_over = true
