@@ -27,6 +27,8 @@ func _on_World_player_caught()->void:
 func _on_World_add_enemy(at:Vector2)->void:
 	var enemy := preload("res://Enemies/Enemy.tscn").instance()
 	enemy.position = at
+	if _rooms_passed > 0:
+		enemy.health = max(6, randi() % _rooms_passed)
 	enemy.target = $Player
 	# warning-ignore:return_value_discarded
 	connect("game_over", enemy, "_on_Main_game_over")

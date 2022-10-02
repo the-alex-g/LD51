@@ -36,7 +36,7 @@ func _on_PlayAgain_pressed()->void:
 
 func _on_MainMenu_pressed()->void:
 	# warning-ignore:return_value_discarded
-	get_tree().change_scene("res://Main/Main.tscn")
+	get_tree().change_scene("res://Menu/MainMenu.tscn")
 
 
 func _on_Main_player_attack(heavy_attack:bool)->void:

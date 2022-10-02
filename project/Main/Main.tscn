@@ -15,7 +15,7 @@ wait_time = 10.0
 autostart = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 97, 104 )
+position = Vector2( 112, 112 )
 
 [node name="World" parent="." instance=ExtResource( 4 )]
 

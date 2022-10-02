@@ -6,6 +6,7 @@ const KNOCKBACK_DISTANCE := Vector2(100, 0)
 var target : Player
 var _move_in_reverse := false
 var _game_over := false
+var _has_seen_target := false
 
 export var speed := 175
 export var health := 6
@@ -18,7 +19,7 @@ func _physics_process(delta:float)->void:
 	if _game_over:
 		return
 	
-	if _can_see_target():
+	if _has_seen_target:
 		var angle = get_angle_to(target.position)
 		
 		var movement_direction := Vector2.RIGHT.rotated(angle) * (-1 if _move_in_reverse else 1)
@@ -33,6 +34,8 @@ func _physics_process(delta:float)->void:
 			_sprite.play("Up")
 		else:
 			_sprite.play("Down")
+	else:
+		_has_seen_target = _can_see_target()
 
 
 func _can_see_target()->bool:
