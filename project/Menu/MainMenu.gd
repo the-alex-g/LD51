@@ -16,7 +16,6 @@ func _on_Button_pressed()->void:
 
 
 func _on_MusicSlider_drag_ended(value_changed:bool)->void:
-	_play_button_press()
 	if value_changed:
 		var new_value = $VBoxContainer/MusicSlider.value as float
 		if new_value == -7.0:
@@ -28,7 +27,6 @@ func _on_MusicSlider_drag_ended(value_changed:bool)->void:
 
 
 func _on_SFXSlider_drag_ended(value_changed:bool)->void:
-	_play_button_press()
 	if value_changed:
 		var new_value = $VBoxContainer/SFXSlider.value as float
 		if new_value == -7.0:
@@ -48,3 +46,7 @@ func _play_button_press()->void:
 	$ButtonPress.pitch_scale = lerp(0.96, 1.04, randf())
 	$ButtonPress.volume_db += randf() / 8 - 0.0625
 	$ButtonPress.play()
+
+
+func _on_drag_started():
+	_play_button_press()

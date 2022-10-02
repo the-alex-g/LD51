@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Shifting Dungeons"
-run/main_scene="res://Main/Main.tscn"
+run/main_scene="res://Menu/SplashScreen.tscn"
 config/icon="res://icon.png"
 
 [audio]

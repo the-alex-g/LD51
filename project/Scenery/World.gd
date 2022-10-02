@@ -5,13 +5,13 @@ signal add_enemy(at)
 signal passed_room
 
 enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RIGHT, T_LEFT, T_RIGHT, B_RIGHT, B_LEFT}
-enum FloorTiles {FLOOR}
 enum Connections {NONE, TOP, BOTTOM, LEFT, RIGHT}
 
 const ROOM_SIZE := 7
 const MIN_SHADOWS := 4
 const MAX_SHADOWS := 7
 const EMPTY := -1
+const FLOOR_TILES := 3
 const VECTOR_TO_CONNECTION := {Vector2.UP:Connections.BOTTOM, Vector2.DOWN:Connections.TOP, Vector2.LEFT:Connections.RIGHT, Vector2.RIGHT:Connections.LEFT}
 
 var _current_room_position := Vector2.ZERO
@@ -46,7 +46,7 @@ func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE, enemie
 	for x in ROOM_SIZE:
 		for y in ROOM_SIZE:
 			if y != 0:
-				_floors.set_cell(x + at.x, y + at.y, FloorTiles.FLOOR)
+				_floors.set_cell(x + at.x, y + at.y, _get_floor_tile())
 			else:
 				_floors.set_cell(x + at.x, y + at.y, EMPTY)
 			# set up walls
@@ -70,6 +70,11 @@ func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE, enemie
 		_create_enemies(at)
 	$FadeInAnim.play("FadeIn")
 
+
+func _get_floor_tile()->int:
+	return randi() % FLOOR_TILES
+
+
 func _create_door_in_room(at:Vector2, side:int)->void:
 	var door_position := Vector2.ZERO
 	# warning-ignore:integer_division
@@ -85,7 +90,7 @@ func _create_door_in_room(at:Vector2, side:int)->void:
 			_walls.set_cellv(door_position + Vector2.RIGHT + Vector2.UP, WallTiles.TL_CORNER)
 			_walls.set_cellv(door_position + Vector2.LEFT, WallTiles.BR_CORNER)
 			_walls.set_cellv(door_position + Vector2.LEFT + Vector2.UP, WallTiles.TR_CORNER)
-			_floors.set_cellv(door_position, FloorTiles.FLOOR)
+			_floors.set_cellv(door_position, _get_floor_tile())
 		Connections.BOTTOM:
 			door_position = Vector2(
 				at.x + door_offset,
@@ -96,7 +101,7 @@ func _create_door_in_room(at:Vector2, side:int)->void:
 			_walls.set_cellv(door_position + Vector2.RIGHT + Vector2.DOWN, WallTiles.BL_CORNER)
 			_walls.set_cellv(door_position + Vector2.LEFT, WallTiles.TR_CORNER)
 			_walls.set_cellv(door_position + Vector2.LEFT + Vector2.DOWN, WallTiles.BR_CORNER)
-			_floors.set_cellv(door_position + Vector2.DOWN, FloorTiles.FLOOR)
+			_floors.set_cellv(door_position + Vector2.DOWN, _get_floor_tile())
 		Connections.LEFT:
 			door_position = Vector2(
 				at.x,
