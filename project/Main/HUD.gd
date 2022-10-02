@@ -4,6 +4,8 @@ onready var _hourglass = $Hourglass as AnimatedSprite
 onready var _animation_player = $AnimationPlayer as AnimationPlayer
 onready var _primary_attacks = $PrimaryAttacks as VBoxContainer
 onready var _heavy_attacks = $HeavyAttacks as VBoxContainer
+onready var _speed_bar = $SpeedBar as ProgressBar
+onready var _point_label = $TextureRect/Panel/VBoxContainer/ScoreLabel as Label
 
 
 func _ready()->void:
@@ -46,5 +48,13 @@ func _on_Main_player_attack(heavy_attack:bool)->void:
 		_primary_attacks.get_child(0).queue_free()
 
 
+func set_points(value:int)->void:
+	_point_label.text = "Score: " + str(value)
+
+
 func _on_Main_ten_second_mark()->void:
 	_add_attack_icons()
+
+
+func _on_Main_player_update_speed(new_speed:float)->void:
+	_speed_bar.value = new_speed

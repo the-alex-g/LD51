@@ -1,6 +1,8 @@
 class_name Enemy
 extends KinematicBody2D
 
+signal defeated
+
 const KNOCKBACK_DISTANCE := Vector2(100, 0)
 
 var target : Player
@@ -8,11 +10,17 @@ var _move_in_reverse := false
 var _game_over := false
 var _has_seen_target := false
 
-export var speed := 175
+export var speed := 100
 export var health := 6
 
 onready var _knockback_timer = $KnockbackTimer as Timer
 onready var _sprite = $AnimatedSprite as AnimatedSprite
+onready var _tween = $Tween as Tween
+
+
+func _ready()->void:
+	_tween.interpolate_property(self, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.5, Tween.TRANS_QUART)
+	_tween.start()
 
 
 func _physics_process(delta:float)->void:
@@ -49,12 +57,14 @@ func _can_see_target()->bool:
 func hit(damage:int)->void:
 	health -= damage
 	_move_in_reverse = true
-	_knockback_timer.start()
+	_knockback_timer.start(0.25 * damage)
 	if health <= 0:
-		$Tween.interpolate_property(self, "modulate", null, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC)
-		$Tween.start()
+		_tween.interpolate_property(self, "modulate", null, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC)
+		_tween.start()
 		
-		yield($Tween, "tween_all_completed")
+		yield(_tween, "tween_all_completed")
+		
+		emit_signal("defeated")
 		
 		queue_free()
 

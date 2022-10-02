@@ -215,6 +215,30 @@ tracks/2/keys = {
 "update": 1,
 "values": [ ExtResource( 3 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("TextureRect/Panel/VBoxContainer/PlayAgain:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("TextureRect/Panel/VBoxContainer/MainMenu:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=44]
 length = 0.001
@@ -255,6 +279,30 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ ExtResource( 3 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("TextureRect/Panel/VBoxContainer/PlayAgain:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("TextureRect/Panel/VBoxContainer/MainMenu:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=45]
@@ -298,6 +346,30 @@ tracks/2/keys = {
 "update": 1,
 "values": [ ExtResource( 5 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("TextureRect/Panel/VBoxContainer/PlayAgain:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("TextureRect/Panel/VBoxContainer/MainMenu:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 2 )
@@ -306,7 +378,7 @@ script = ExtResource( 2 )
 position = Vector2( 300, 32 )
 frames = SubResource( 41 )
 animation = "Default"
-frame = 9
+frame = 38
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -334,9 +406,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -200.0
-margin_top = -80.0
+margin_top = -90.0
 margin_right = 200.0
-margin_bottom = 80.0
+margin_bottom = 90.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/Panel"]
 anchor_left = 0.5
@@ -360,18 +432,26 @@ You have escaped the grasping shadows and
 returned to your home!"
 align = 1
 
-[node name="PlayAgain" type="Button" parent="TextureRect/Panel/VBoxContainer"]
+[node name="ScoreLabel" type="Label" parent="TextureRect/Panel/VBoxContainer"]
 margin_top = 70.0
 margin_right = 371.0
-margin_bottom = 100.0
+margin_bottom = 90.0
+align = 1
+
+[node name="PlayAgain" type="Button" parent="TextureRect/Panel/VBoxContainer"]
+margin_top = 94.0
+margin_right = 371.0
+margin_bottom = 124.0
 grow_horizontal = 2
+disabled = true
 text = "Play Again"
 
 [node name="MainMenu" type="Button" parent="TextureRect/Panel/VBoxContainer"]
-margin_top = 104.0
+margin_top = 128.0
 margin_right = 371.0
-margin_bottom = 134.0
+margin_bottom = 158.0
 grow_horizontal = 2
+disabled = true
 text = "Return to the Main Menu"
 
 [node name="PrimaryAttacks" type="VBoxContainer" parent="."]
@@ -393,6 +473,21 @@ margin_top = -20.0
 margin_right = -10.0
 margin_bottom = 20.0
 grow_vertical = 2
+
+[node name="SpeedBar" type="ProgressBar" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -50.0
+margin_top = -24.0
+margin_right = 50.0
+margin_bottom = -10.0
+grow_horizontal = 2
+theme = ExtResource( 4 )
+max_value = 200.0
+value = 200.0
+percent_visible = false
 
 [connection signal="pressed" from="TextureRect/Panel/VBoxContainer/PlayAgain" to="." method="_on_PlayAgain_pressed"]
 [connection signal="pressed" from="TextureRect/Panel/VBoxContainer/MainMenu" to="." method="_on_MainMenu_pressed"]

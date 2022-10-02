@@ -9,7 +9,7 @@ enum FloorTiles {FLOOR}
 enum Connections {NONE, TOP, BOTTOM, LEFT, RIGHT}
 
 const ROOM_SIZE := 7
-const MIN_SHADOWS := 3
+const MIN_SHADOWS := 4
 const MAX_SHADOWS := 7
 const EMPTY := -1
 const VECTOR_TO_CONNECTION := {Vector2.UP:Connections.BOTTOM, Vector2.DOWN:Connections.TOP, Vector2.LEFT:Connections.RIGHT, Vector2.RIGHT:Connections.LEFT}
@@ -17,6 +17,7 @@ const VECTOR_TO_CONNECTION := {Vector2.UP:Connections.BOTTOM, Vector2.DOWN:Conne
 var _current_room_position := Vector2.ZERO
 var _previous_room_position = null
 var _game_over := false
+var _rooms_passed := 0
 
 onready var _walls = $Walls as TileMap
 onready var _floors = $Floor as TileMap
@@ -122,14 +123,9 @@ func _create_enemies(at:Vector2)->void:
 
 func _delete_room(at:Vector2)->void:
 	at *= ROOM_SIZE
-	_blackout.position = at * 32
 	
-	for body in _blackout.get_overlapping_bodies():
-		if body is Player:
-			emit_signal("player_caught")
-			_game_over = true
-		elif body is Enemy:
-			body.queue_free()
+	_blackout_sprite.modulate = Color(1, 1, 1, 0)
+	_blackout.position = at * 32
 	
 	if not _game_over:
 		emit_signal("passed_room")
@@ -143,7 +139,12 @@ func _delete_room(at:Vector2)->void:
 			_floors.set_cell(x + at.x, y + at.y, EMPTY)
 			_walls.set_cell(x + at.x, y + at.y, EMPTY)
 	
-	_blackout_sprite.modulate = Color(1, 1, 1, 0)
+	for body in _blackout.get_overlapping_bodies():
+		if body is Player:
+			emit_signal("player_caught")
+			_game_over = true
+		elif body is Enemy:
+			body.queue_free()
 
 
 func _on_Main_ten_second_mark()->void:

@@ -2,17 +2,18 @@ class_name Player
 extends KinematicBody2D
 
 signal attack(heavy_attack)
+signal update_speed(new_speed)
 
 enum AttackKey {SPENT, PRIMARY, HEAVY, RANGED}
 
-const SPEED := 200
 const PRIMARY_HIT_RADIUS := 15.0
 const HEAVY_HIT_RADIUS := 25.0
 const PRIMARY_DAMAGE := 2
 const HEAVY_DAMAGE := 3
 const RELOAD_TIME := 1.0
-const SPEED_PENALTY_PER_ENEMY := 50
+const SPEED_PENALTY_PER_ENEMY := 40
 
+var _speed := 200.0
 var _primary_attacks := [AttackKey.PRIMARY, AttackKey.PRIMARY, AttackKey.PRIMARY]
 var _heavy_attacks := [AttackKey.HEAVY]
 var _can_attack := true
@@ -38,10 +39,12 @@ func _physics_process(delta:float)->void:
 		Input.get_axis("up", "down")
 	).normalized()
 	
-	var speed := max(0, SPEED - (SPEED_PENALTY_PER_ENEMY * adjacent_enemies))
+	if _speed > 10 and not _animation_player.is_playing():
+		_speed -= adjacent_enemies * delta * 2.0
+		emit_signal("update_speed", _speed)
 	
 	# warning-ignore:return_value_discarded
-	move_and_collide(speed * movement_direction * delta)
+	move_and_collide(_speed * movement_direction * delta)
 	
 	if _can_attack:
 		if Input.is_action_just_pressed("primary_attack"):
@@ -88,6 +91,10 @@ func _execute_heavy_attack()->void:
 		_animation_player.play("Heavy")
 		var index := _heavy_attacks.find(AttackKey.HEAVY)
 		_heavy_attacks.remove(index)
+		
+		if _speed <= 150.0:
+			_speed += 10 * (1 + (1 - (_speed / 200)))
+			emit_signal("update_speed", _speed)
 		
 		_hit_area_collision_shape.shape.radius = _heavy_hit_radius
 		# the yield is necessary because otherwise the shape's radius is not resized
