@@ -30,6 +30,10 @@ config/name="Shifting Dungeons"
 run/main_scene="res://Main/Main.tscn"
 config/icon="res://icon.png"
 
+[audio]
+
+default_bus_layout="res://Sound/AudioBus.tres"
+
 [display]
 
 window/size/width=600

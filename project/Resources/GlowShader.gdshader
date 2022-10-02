@@ -5,5 +5,5 @@ uniform float intensity = 0;
 
 
 void fragment() {
-	COLOR = vec4(color.x, color.y, color.x, intensity - distance(UV, vec2(0.5, 0.5)) * intensity * 2.0);
+	COLOR = vec4(color.x, color.y, color.z, intensity - distance(UV, vec2(0.5, 0.5)) * intensity * 2.0);
 }

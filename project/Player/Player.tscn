@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scenery/Blackout.png" type="Texture" id=2]
 [ext_resource path="res://Player/Player.png" type="Texture" id=3]
 [ext_resource path="res://Resources/GlowShader.gdshader" type="Shader" id=4]
+[ext_resource path="res://Sound/PrimaryAttack.wav" type="AudioStream" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 8.0
@@ -33,7 +34,7 @@ animations = [ {
 
 [sub_resource type="ShaderMaterial" id=7]
 shader = ExtResource( 4 )
-shader_param/color = Vector3( 1, 1, 1 )
+shader_param/color = Vector3( 1, 1, 0.8 )
 shader_param/intensity = 0.5
 
 [sub_resource type="Animation" id=10]
@@ -121,5 +122,10 @@ texture = ExtResource( 2 )
 anims/Heavy = SubResource( 10 )
 anims/Primary = SubResource( 8 )
 anims/RESET = SubResource( 9 )
+
+[node name="AttackSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+pitch_scale = 1.25
+bus = "SFX"
 
 [connection signal="timeout" from="CooldownTimer" to="." method="_on_CooldownTimer_timeout"]

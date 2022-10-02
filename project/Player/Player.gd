@@ -28,6 +28,7 @@ onready var _hit_area_collision_shape = $HitArea/CollisionShape2D as CollisionSh
 onready var _cooldown_timer = $CooldownTimer as Timer
 onready var _sprite = $Sprite as AnimatedSprite
 onready var _animation_player = $Attack as AnimationPlayer
+onready var _attack_sound = $AttackSound as AudioStreamPlayer
 
 
 func _physics_process(delta:float)->void:
@@ -70,6 +71,9 @@ func _attack(type:int)->void:
 
 func _execute_primary_attack()->void:
 	if _primary_attacks.has(AttackKey.PRIMARY):
+		_attack_sound.volume_db = 0
+		_attack_sound.pitch_scale = lerp(0.6, 1.1, randf())
+		_attack_sound.play()
 		emit_signal("attack", false)
 		_animation_player.play("Primary")
 		var index := _primary_attacks.find(AttackKey.PRIMARY)
@@ -87,6 +91,9 @@ func _execute_primary_attack()->void:
 
 func _execute_heavy_attack()->void:
 	if _heavy_attacks.has(AttackKey.HEAVY):
+		_attack_sound.volume_db += 1 + 5 * randf()
+		_attack_sound.pitch_scale = lerp(0.5, 1.0, randf())
+		_attack_sound.play()
 		emit_signal("attack", true)
 		_animation_player.play("Heavy")
 		var index := _heavy_attacks.find(AttackKey.HEAVY)

@@ -4,7 +4,7 @@ signal player_caught
 signal add_enemy(at)
 signal passed_room
 
-enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RIGHT}
+enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RIGHT, T_LEFT, T_RIGHT, B_RIGHT, B_LEFT}
 enum FloorTiles {FLOOR}
 enum Connections {NONE, TOP, BOTTOM, LEFT, RIGHT}
 
@@ -102,12 +102,20 @@ func _create_door_in_room(at:Vector2, side:int)->void:
 				at.x,
 				at.y + door_offset
 			)
+			_walls.set_cellv(door_position + Vector2.UP, WallTiles.T_LEFT)
+			_walls.set_cellv(door_position + Vector2.DOWN, WallTiles.B_LEFT)
+			_walls.set_cellv(door_position + Vector2.DOWN + Vector2.LEFT, WallTiles.B_RIGHT)
+			_walls.set_cellv(door_position + Vector2.UP + Vector2.LEFT, WallTiles.T_RIGHT)
 			_walls.set_cellv(door_position + Vector2.LEFT, EMPTY)
 		Connections.RIGHT:
 			door_position = Vector2(
 				at.x + ROOM_SIZE - 1,
 				at.y + door_offset
 			)
+			_walls.set_cellv(door_position + Vector2.UP, WallTiles.T_RIGHT)
+			_walls.set_cellv(door_position + Vector2.DOWN, WallTiles.B_RIGHT)
+			_walls.set_cellv(door_position + Vector2.DOWN + Vector2.RIGHT, WallTiles.B_LEFT)
+			_walls.set_cellv(door_position + Vector2.UP + Vector2.RIGHT, WallTiles.T_LEFT)
 			_walls.set_cellv(door_position + Vector2.RIGHT, EMPTY)
 	_walls.set_cellv(door_position, EMPTY)
 
