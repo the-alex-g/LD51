@@ -1,120 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Menu/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://Resources/theme.tres" type="Theme" id=2]
 [ext_resource path="res://Resources/title_font.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Resources/large_font.tres" type="DynamicFont" id=4]
-[ext_resource path="res://Resources/GlowShader.gdshader" type="Shader" id=5]
-[ext_resource path="res://Scenery/Blackout.png" type="Texture" id=6]
-
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 5 )
-shader_param/color = Vector3( 1, 1, 0.8 )
-shader_param/intensity = 1.0
-
-[sub_resource type="Animation" id=2]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath("Center/Pivot1:rotation_degrees")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 0.0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Center/Pivot2:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 0.0 ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Center/Pivot2/Sprite4:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Center/Pivot1/Sprite2:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0.7, 0.7 ) ]
-}
-
-[sub_resource type="Animation" id=3]
-resource_name = "Rotate"
-length = 9.0
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Center/Pivot1:rotation_degrees")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 9 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 0.0, 360.0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Center/Pivot2:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 4.5, 9 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ 0.0, 360.0, 720.0 ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Center/Pivot2/Sprite4:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 5.6 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.5, 0.5 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Center/Pivot1/Sprite2:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 3.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0.7, 0.7 ), Vector2( 1.2, 1.2 ) ]
-}
+[ext_resource path="res://Scenery/Motes.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Sound/ButtonPress.wav" type="AudioStream" id=7]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -127,45 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.0862745, 0.0862745, 0.0431373, 1 )
 
-[node name="Center" type="Node2D" parent="."]
-position = Vector2( 300, 300 )
-
-[node name="Pivot1" type="Node2D" parent="Center"]
-position = Vector2( 100, -5 )
-
-[node name="Sprite" type="Sprite" parent="Center/Pivot1"]
-material = SubResource( 1 )
-position = Vector2( 77, -58 )
-texture = ExtResource( 6 )
-
-[node name="Sprite2" type="Sprite" parent="Center/Pivot1"]
-material = SubResource( 1 )
-position = Vector2( -301, -127 )
-scale = Vector2( 0.7, 0.7 )
-texture = ExtResource( 6 )
-
-[node name="Sprite3" type="Sprite" parent="Center/Pivot1"]
-material = SubResource( 1 )
-position = Vector2( -171, 200 )
-texture = ExtResource( 6 )
-
-[node name="Pivot2" type="Node2D" parent="Center"]
-position = Vector2( -113, 40 )
-
-[node name="Sprite4" type="Sprite" parent="Center/Pivot2"]
-material = SubResource( 1 )
-position = Vector2( -33, -81 )
-texture = ExtResource( 6 )
-
-[node name="Sprite5" type="Sprite" parent="Center/Pivot2"]
-material = SubResource( 1 )
-position = Vector2( 302, 169 )
-texture = ExtResource( 6 )
-
-[node name="Sprite6" type="Sprite" parent="Center/Pivot2"]
-material = SubResource( 1 )
-position = Vector2( 141, -281 )
-texture = ExtResource( 6 )
+[node name="Motes" parent="." instance=ExtResource( 5 )]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -230,10 +83,9 @@ margin_bottom = 101.0
 custom_fonts/font = ExtResource( 3 )
 text = "Shifting Dungeons"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "Rotate"
-anims/RESET = SubResource( 2 )
-anims/Rotate = SubResource( 3 )
+[node name="ButtonPress" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "SFX"
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="drag_ended" from="VBoxContainer/MusicSlider" to="." method="_on_MusicSlider_drag_ended"]

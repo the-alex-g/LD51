@@ -1,10 +1,11 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://Main/Hourglass.png" type="Texture" id=1]
 [ext_resource path="res://Main/HUD.gd" type="Script" id=2]
 [ext_resource path="res://Resources/DefeatTexture.tres" type="Texture" id=3]
 [ext_resource path="res://Resources/theme.tres" type="Theme" id=4]
 [ext_resource path="res://Resources/VictoryTexture.tres" type="Texture" id=5]
+[ext_resource path="res://Sound/ButtonPress.wav" type="AudioStream" id=6]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -378,7 +379,7 @@ script = ExtResource( 2 )
 position = Vector2( 300, 32 )
 frames = SubResource( 41 )
 animation = "Default"
-frame = 15
+frame = 22
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -488,6 +489,10 @@ theme = ExtResource( 4 )
 max_value = 200.0
 value = 200.0
 percent_visible = false
+
+[node name="ButtonPress" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+bus = "SFX"
 
 [connection signal="pressed" from="TextureRect/Panel/VBoxContainer/PlayAgain" to="." method="_on_PlayAgain_pressed"]
 [connection signal="pressed" from="TextureRect/Panel/VBoxContainer/MainMenu" to="." method="_on_MainMenu_pressed"]

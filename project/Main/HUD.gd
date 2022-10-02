@@ -9,6 +9,8 @@ onready var _point_label = $TextureRect/Panel/VBoxContainer/ScoreLabel as Label
 
 
 func _ready()->void:
+	# the button press play is a carry-over from the main menu play button being pressed
+	$ButtonPress.play()
 	_hourglass.frame = 0
 	_add_attack_icons()
 

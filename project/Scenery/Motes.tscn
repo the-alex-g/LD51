@@ -1,0 +1,111 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Resources/GlowShader.gdshader" type="Shader" id=1]
+[ext_resource path="res://Scenery/Blackout.png" type="Texture" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/color = Vector3( 1, 1, 0.8 )
+shader_param/intensity = 1.0
+
+[sub_resource type="Animation" id=2]
+length = 9.0
+
+[sub_resource type="Animation" id=3]
+resource_name = "Rotate"
+length = 9.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Motes/Pivot1:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Motes/Pivot2:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 720.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Motes/Pivot2/Sprite4:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.5, 0.5 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Motes/Pivot1/Sprite2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.7, 0.7 ), Vector2( 1.2, 1.2 ) ]
+}
+
+[node name="Motes" type="Node2D"]
+position = Vector2( 300, 300 )
+
+[node name="Pivot1" type="Node2D" parent="."]
+position = Vector2( 100, -5 )
+
+[node name="Sprite" type="Sprite" parent="Pivot1"]
+material = SubResource( 1 )
+position = Vector2( 77, -58 )
+texture = ExtResource( 2 )
+
+[node name="Sprite2" type="Sprite" parent="Pivot1"]
+material = SubResource( 1 )
+position = Vector2( -301, -127 )
+scale = Vector2( 0.7, 0.7 )
+texture = ExtResource( 2 )
+
+[node name="Sprite3" type="Sprite" parent="Pivot1"]
+material = SubResource( 1 )
+position = Vector2( -171, 200 )
+texture = ExtResource( 2 )
+
+[node name="Pivot2" type="Node2D" parent="."]
+position = Vector2( -113, 40 )
+
+[node name="Sprite4" type="Sprite" parent="Pivot2"]
+material = SubResource( 1 )
+position = Vector2( -33, -81 )
+texture = ExtResource( 2 )
+
+[node name="Sprite5" type="Sprite" parent="Pivot2"]
+material = SubResource( 1 )
+position = Vector2( 302, 169 )
+texture = ExtResource( 2 )
+
+[node name="Sprite6" type="Sprite" parent="Pivot2"]
+material = SubResource( 1 )
+position = Vector2( 141, -281 )
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../..")
+autoplay = "Rotate"
+anims/RESET = SubResource( 2 )
+anims/Rotate = SubResource( 3 )
