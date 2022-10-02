@@ -8,8 +8,8 @@ enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RI
 enum Connections {NONE, TOP, BOTTOM, LEFT, RIGHT}
 
 const ROOM_SIZE := 7
-const MIN_SHADOWS := 4
-const MAX_SHADOWS := 7
+const MIN_SHADOWS := 5
+const MAX_SHADOWS := 8
 const EMPTY := -1
 const FLOOR_TILES := 3
 const VECTOR_TO_CONNECTION := {Vector2.UP:Connections.BOTTOM, Vector2.DOWN:Connections.TOP, Vector2.LEFT:Connections.RIGHT, Vector2.RIGHT:Connections.LEFT}
@@ -39,15 +39,15 @@ func _ready()->void:
 	_create_room()
 
 
-func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE, enemies := true)->void:
+func _create_room(at := Vector2.ZERO, side_connected := Connections.NONE, enemies := true, walls_only := false)->void:
 	at *= ROOM_SIZE
 	_fade_in.position = at * 32
 	_fade_in.modulate = Color.white
 	for x in ROOM_SIZE:
 		for y in ROOM_SIZE:
-			if y != 0:
+			if y != 0 and not walls_only:
 				_floors.set_cell(x + at.x, y + at.y, _get_floor_tile())
-			else:
+			elif y == 0:
 				_floors.set_cell(x + at.x, y + at.y, EMPTY)
 			# set up walls
 			if x == 0 and y == 0:
@@ -175,7 +175,7 @@ func _on_Main_ten_second_mark()->void:
 		next_room_position_options.erase(_previous_room_position)
 	# create the new room
 	var next_room_position = next_room_position_options[randi() % next_room_position_options.size()] as Vector2
-	_create_room(_current_room_position, Connections.NONE, false)
+	_create_room(_current_room_position, Connections.NONE, false, true)
 	_create_room(next_room_position, VECTOR_TO_CONNECTION[next_room_position - _current_room_position])
 	_previous_room_position = _current_room_position
 	_current_room_position = next_room_position

@@ -100,7 +100,7 @@ func _execute_heavy_attack()->void:
 		_heavy_attacks.remove(index)
 		
 		if _speed <= 150.0:
-			_speed += 10 * (1 + (1 - (_speed / 200)))
+			_speed += 5 * (1 + (1 - (_speed / 200)))
 			emit_signal("update_speed", _speed)
 		
 		_hit_area_collision_shape.shape.radius = _heavy_hit_radius
