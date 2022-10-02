@@ -50,6 +50,13 @@ func hit(damage:int)->void:
 	health -= damage
 	_move_in_reverse = true
 	_knockback_timer.start()
+	if health <= 0:
+		$Tween.interpolate_property(self, "modulate", null, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC)
+		$Tween.start()
+		
+		yield($Tween, "tween_all_completed")
+		
+		queue_free()
 
 
 func _on_SlowZone_body_entered(body:PhysicsBody2D)->void:
@@ -64,8 +71,6 @@ func _on_SlowZone_body_exited(body:PhysicsBody2D)->void:
 
 func _on_KnockbackTimer_timeout()->void:
 	_move_in_reverse = false
-	if health <= 0:
-		queue_free()
 
 
 func _on_Main_game_over(_victory:bool)->void:
