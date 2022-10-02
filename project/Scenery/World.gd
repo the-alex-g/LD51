@@ -8,7 +8,7 @@ enum WallTiles {HORIZONTAL, BL_CORNER, BR_CORNER, TR_CORNER, TL_CORNER, LEFT, RI
 enum FloorTiles {FLOOR}
 enum Connections {NONE, TOP, BOTTOM, LEFT, RIGHT}
 
-const ROOM_SIZE := 9
+const ROOM_SIZE := 7
 const EMPTY := -1
 const VECTOR_TO_CONNECTION := {Vector2.UP:Connections.BOTTOM, Vector2.DOWN:Connections.TOP, Vector2.LEFT:Connections.RIGHT, Vector2.RIGHT:Connections.LEFT}
 

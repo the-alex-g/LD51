@@ -1,6 +1,7 @@
 extends Node2D
 
 signal ten_second_mark
+signal player_attack(heavy_attack)
 signal game_over(victory)
 
 const VICTORY_NUMBER := 15
@@ -36,3 +37,8 @@ func _on_World_passed_room()->void:
 	_rooms_passed += 1
 	if _rooms_passed >= VICTORY_NUMBER:
 		emit_signal("game_over", true)
+		_game_timer.stop()
+
+
+func _on_Player_attack(heavy_attack:bool)->void:
+	emit_signal("player_attack", heavy_attack)

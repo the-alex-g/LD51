@@ -21,9 +21,12 @@ position = Vector2( 97, 104 )
 
 [connection signal="game_over" from="." to="HUD" method="_on_Main_game_over"]
 [connection signal="game_over" from="." to="Player" method="_on_Main_game_over"]
+[connection signal="player_attack" from="." to="HUD" method="_on_Main_player_attack"]
+[connection signal="ten_second_mark" from="." to="HUD" method="_on_Main_ten_second_mark"]
 [connection signal="ten_second_mark" from="." to="Player" method="_on_Main_ten_second_mark"]
 [connection signal="ten_second_mark" from="." to="World" method="_on_Main_ten_second_mark"]
 [connection signal="timeout" from="TenSecondTimer" to="." method="_on_TenSecondTimer_timeout"]
+[connection signal="attack" from="Player" to="." method="_on_Player_attack"]
 [connection signal="add_enemy" from="World" to="." method="_on_World_add_enemy"]
 [connection signal="passed_room" from="World" to="." method="_on_World_passed_room"]
 [connection signal="player_caught" from="World" to="." method="_on_World_player_caught"]

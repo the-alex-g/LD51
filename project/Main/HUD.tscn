@@ -309,7 +309,7 @@ script = ExtResource( 2 )
 position = Vector2( 300, 32 )
 frames = SubResource( 41 )
 animation = "Default"
-frame = 15
+frame = 18
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -375,6 +375,26 @@ margin_right = 382.0
 margin_bottom = 134.0
 grow_horizontal = 2
 text = "Return to the Main Menu"
+
+[node name="PrimaryAttacks" type="VBoxContainer" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 10.0
+margin_top = -20.0
+margin_right = 50.0
+margin_bottom = 20.0
+grow_vertical = 2
+
+[node name="HeavyAttacks" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -20.0
+margin_right = -10.0
+margin_bottom = 20.0
+grow_vertical = 2
 
 [connection signal="pressed" from="TextureRect/Panel/VBoxContainer/PlayAgain" to="." method="_on_PlayAgain_pressed"]
 [connection signal="pressed" from="TextureRect/Panel/VBoxContainer/MainMenu" to="." method="_on_MainMenu_pressed"]

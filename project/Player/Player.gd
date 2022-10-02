@@ -1,6 +1,8 @@
 class_name Player
 extends KinematicBody2D
 
+signal attack(heavy_attack)
+
 enum AttackKey {SPENT, PRIMARY, HEAVY, RANGED}
 
 const SPEED := 200
@@ -9,7 +11,7 @@ const HEAVY_HIT_RADIUS := 25.0
 const PRIMARY_DAMAGE := 2
 const HEAVY_DAMAGE := 3
 const RELOAD_TIME := 1.0
-const SPEED_PENALTY_PER_ENEMY := 30
+const SPEED_PENALTY_PER_ENEMY := 50
 
 var _primary_attacks := [AttackKey.PRIMARY, AttackKey.PRIMARY, AttackKey.PRIMARY]
 var _heavy_attacks := [AttackKey.HEAVY]
@@ -36,7 +38,7 @@ func _physics_process(delta:float)->void:
 		Input.get_axis("up", "down")
 	).normalized()
 	
-	var speed := max(10, SPEED - (SPEED_PENALTY_PER_ENEMY * adjacent_enemies))
+	var speed := max(0, SPEED - (SPEED_PENALTY_PER_ENEMY * adjacent_enemies))
 	
 	# warning-ignore:return_value_discarded
 	move_and_collide(speed * movement_direction * delta)
@@ -65,9 +67,10 @@ func _attack(type:int)->void:
 
 func _execute_primary_attack()->void:
 	if _primary_attacks.has(AttackKey.PRIMARY):
+		emit_signal("attack", false)
 		_animation_player.play("Primary")
 		var index := _primary_attacks.find(AttackKey.PRIMARY)
-		_primary_attacks[index] = AttackKey.SPENT
+		_primary_attacks.remove(index)
 		
 		_hit_area_collision_shape.shape.radius = _primary_hit_radius
 		# the yield is necessary because otherwise the shape's radius is not resized
@@ -81,9 +84,10 @@ func _execute_primary_attack()->void:
 
 func _execute_heavy_attack()->void:
 	if _heavy_attacks.has(AttackKey.HEAVY):
+		emit_signal("attack", true)
 		_animation_player.play("Heavy")
 		var index := _heavy_attacks.find(AttackKey.HEAVY)
-		_heavy_attacks[index] = AttackKey.SPENT
+		_heavy_attacks.remove(index)
 		
 		_hit_area_collision_shape.shape.radius = _heavy_hit_radius
 		# the yield is necessary because otherwise the shape's radius is not resized
@@ -100,10 +104,9 @@ func _on_Main_ten_second_mark()->void:
 
 
 func _reset_attacks()->void:
-	for i in _primary_attacks.size():
-		_primary_attacks[i] = AttackKey.PRIMARY
-	for i in _heavy_attacks.size():
-		_heavy_attacks[i] = AttackKey.HEAVY
+	for i in 3:
+		_primary_attacks.append(AttackKey.PRIMARY)
+	_heavy_attacks.append(AttackKey.HEAVY)
 
 
 func _on_CooldownTimer_timeout()->void:
